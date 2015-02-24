@@ -5,6 +5,8 @@ repository for easy testing of development branches.
 
 Scripts are provided for both CFEngine 3.1 and 3.6.
 
+![Demo](/demo.gif?raw=true)
+
 ## Files
 
 * `dockerfiles` contains the Dockerfiles used to create the Docker
