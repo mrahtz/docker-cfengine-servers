@@ -1,0 +1,51 @@
+#!/bin/bash
+
+################################################################################
+# Copyright (c) 2014, 2015 Genome Research Ltd.
+#
+# Author: Matthew Rahtz <matthew.rahtz@sanger.ac.uk>
+#
+# Permission is hereby granted, free of charge, to any person obtaining
+# a copy of this software and associated documentation files (the
+# "Software"), to deal in the Software without restriction, including
+# without limitation the rights to use, copy, modify, merge, publish,
+# distribute, sublicense, and/or sell copies of the Software, and to
+# permit persons to whom the Software is furnished to do so, subject to
+# the following conditions:
+#
+# The above copyright notice and this permission notice shall be included
+# in all copies or substantial portions of the Software.
+#
+# THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+# EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+# MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
+# IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY
+# CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,
+# TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
+# SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+################################################################################
+
+# containers will be brought up with a hostname of this, plus the branch name
+# e.g. for a branch 'sparkles', the container will appear
+# as 'cfesrv-sparkles'
+readonly CONTAINER_HOSTNAME_PREFIX="cfe31srv"
+
+readonly HOOK_DIR=$(dirname "$0")
+
+while read oldrev newrev refname
+do
+    branch=$(basename "$refname")
+
+    if [[ $branch != master ]]; then
+        if [[ $newrev == 0000000000000000000000000000000000000000 ]]; then
+            mode=destroy
+        elif [[ $oldrev == 0000000000000000000000000000000000000000  ]]; then
+            mode=create
+        else
+            mode=recreate
+        fi
+        docker_image_name=mrahtz/cfe31srv
+        "$HOOK_DIR"/docker-cfengine-servers/cfengine_container.sh \
+            "$mode" "$CONTAINER_HOSTNAME_PREFIX" "$docker_image_name" "$branch"
+    fi
+done

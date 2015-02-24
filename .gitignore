@@ -1,0 +1,4 @@
+.DS_Store
+*/.DS_Store
+dockerfiles/container_ssh_key
+dockerfiles/*/container_ssh_key.pub

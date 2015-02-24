@@ -1,0 +1,63 @@
+#!/bin/bash
+
+################################################################################
+# Copyright (c) 2014, 2015 Genome Research Ltd.
+#
+# Author: Matthew Rahtz <matthew.rahtz@sanger.ac.uk>
+#
+# Permission is hereby granted, free of charge, to any person obtaining
+# a copy of this software and associated documentation files (the
+# "Software"), to deal in the Software without restriction, including
+# without limitation the rights to use, copy, modify, merge, publish,
+# distribute, sublicense, and/or sell copies of the Software, and to
+# permit persons to whom the Software is furnished to do so, subject to
+# the following conditions:
+#
+# The above copyright notice and this permission notice shall be included
+# in all copies or substantial portions of the Software.
+#
+# THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+# EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+# MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
+# IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY
+# CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,
+# TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
+# SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+################################################################################
+
+while read oldrev newrev refname; do
+    branch=$(basename "$refname")
+
+    rm -rf /tmp/cfengine
+    # get a non-bare copy of the repository
+    git clone -b "$branch" /var/cfengine_git /tmp/cfengine
+    # replace any references to the main policy server
+    find /tmp/cfengine -type f -name '*.cf' -exec \
+        sed -i "s/cf3srv/$HOSTNAME/g" "{}" \;
+    # and update the masterfiles from it
+    rm -rf /var/lib/cfengine3/masterfiles/*
+    cp -a /tmp/cfengine/masterfiles/* /var/lib/cfengine3/masterfiles/
+    # copy the masterfiles to inputs, too, so that we can check them
+    # using cf-promises
+    cp -a /tmp/cfengine/masterfiles/* /var/lib/cfengine3/inputs/
+
+    echo "Checking promises..."
+    # check promise syntax
+    cf-promises
+    if [[ $? != 0 ]]; then
+        echo "Error: promise check failed" >&2
+        exit 1
+    else
+        echo "done."
+    fi
+
+    # removing cf_promises_validated from masterfiles will cause
+    # cf-serverd to re-evaluate promises, but after an indeterminate amount
+    # of time (it seems to run a check every 10 seconds)
+    # cf-serverd also seems to re-evaluate on every connection
+    # for some reason, cf-agent will sometimes fail to work if it
+    # triggers that re-evaluation
+    # so we force a re-evaluation here by just doing a dummy connect
+    nc -vz localhost 5308 &> /dev/null
+
+done
