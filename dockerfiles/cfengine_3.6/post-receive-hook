@@ -35,6 +35,7 @@ while read oldrev newrev refname; do
     rm -rf /var/cfengine/masterfiles/*
     cp -a /tmp/cfengine/masterfiles/* /var/cfengine/masterfiles/
     # also manually update the inputs (used for cf-serverd ACL)
+    rm -rf /var/cfengine/inputs/*
     cp -a /tmp/cfengine/masterfiles/* /var/cfengine/inputs/
 
     echo "Checking promises..."

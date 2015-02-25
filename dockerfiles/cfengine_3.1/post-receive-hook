@@ -40,6 +40,7 @@ while read oldrev newrev refname; do
     # copy the masterfiles to inputs, too, so that we can check them
     # using cf-promises (and so that cf-serverd will pick up any
     # potentially updated ACLs)
+    rm -rf /var/lib/cfengine3/inputs/*
     cp -a /tmp/cfengine/masterfiles/* /var/lib/cfengine3/inputs/
 
     echo "Checking promises..."
