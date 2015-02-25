@@ -63,6 +63,10 @@ $ git clone https://github.com/mrahtz/docker-cfengine-servers
 ```bash
 $ cp docker-cfengine-servers/post-receive.sample.3.6 post-receive
 ```
+* Optionally, customise the `post-receive` hook used by the container to
+  update server policy. These are located in
+  `dockerfiles/<version>/post_receive_hook`. Customisation may be necessary
+  if your versioned configuration includes directories other than `masterfiles`.
 * Build the Docker images with:
 ```bash
 $ cd docker-cfengine-servers/dockerfiles
