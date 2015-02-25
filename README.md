@@ -26,9 +26,9 @@ Scripts are provided for both CFEngine 3.1 and 3.6.
 
 ### Prerequisites
 
-The intended setup involves two servers: one running your production CFEngine policy server,
-holding your master Git repository, and another for development work, which holds your
-development Git repository and will be where the containers are created.
+The intended setup involves two servers: one running your production CFEngine
+policy server, holding your master Git repository, and another for development
+work, where the containers are created.
 
 On the development server, we need:
 * Docker
@@ -46,9 +46,11 @@ More generally in the network infrastructure, we need:
 
 ### Setup
 
-* Place the entire checkout folder in your CFEngine Git repository's hooks
-  folder on your development server.
+* On the development server, create a bare Git repository to be used as
+  as a Git remote for development work. Place the entire checkout folder
+  in the repository's hooks folder.
 ```bash
+$ git init --bare /var/cfengine_git
 $ cd /var/cfengine_git/hooks
 $ git clone https://github.com/mrahtz/docker-cfengine-servers
 ```
