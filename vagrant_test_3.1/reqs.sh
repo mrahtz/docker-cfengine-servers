@@ -43,6 +43,11 @@ apt-get -y install lxc-docker dhcpcd cfengine3
 rm /var/lib/cfengine3/inputs
 mkdir /var/lib/cfengine3/inputs
 
+# make a copy of the repository contents as it exists on the host
+# otherwise, if both tests are running at once, they'll fight
+# over SSH keys
+cp -a /repo_host /repo
+
 cp /repo/vagrant_test_3.1/bootstrap_policy/* /var/lib/cfengine3/inputs/
 
 docker run --rm -v /usr/local/bin:/target jpetazzo/nsenter

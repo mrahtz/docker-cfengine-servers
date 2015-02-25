@@ -44,5 +44,10 @@ cfengine_deb_url+="/cfengine-community_3.6.4-1_amd64.deb"
 wget -q "$cfengine_deb_url" -O /tmp/cfe.deb
 dpkg -i /tmp/cfe.deb
 
+# make a copy of the repository contents as it exists on the host
+# otherwise, if both tests are running at once, they'll fight
+# over SSH keys
+cp -a /repo_host /repo
+
 cd "/repo/dockerfiles"
 ./build_images.sh
