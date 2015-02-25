@@ -71,9 +71,15 @@ $ ./build_images.sh
 
 ### Usage
 
-Push a branch to the Git repository with the hooks installed.
-A CFEngine policy server will appear at "`$CONTAINER_HOSTNAME_PREFIX-<branch name>`" serving
-the contents of your branch:
+* Add a Git remote for your development server repository to your local
+  configuration checkout:
+```bash
+$ cd ~/cfengine
+$ git remote add dev root@<dev server>:/var/cfengine_git
+```
+* Push a branch to the development remote to spawn the container. A CFEngine
+policy server will appear at "`$CONTAINER_HOSTNAME_PREFIX-<branch name>`"
+serving the contents of your branch:
 ```bash
 $ git checkout -b addsparkles
 ...
