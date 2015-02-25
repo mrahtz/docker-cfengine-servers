@@ -34,6 +34,8 @@ while read oldrev newrev refname; do
     # and update the masterfiles from it
     rm -rf /var/cfengine/masterfiles/*
     cp -a /tmp/cfengine/masterfiles/* /var/cfengine/masterfiles/
+    # also manually update the inputs (used for cf-serverd ACL)
+    cp -a /tmp/cfengine/masterfiles/* /var/cfengine/inputs/
 
     echo "Checking promises..."
     # check promise syntax
@@ -45,5 +47,9 @@ while read oldrev newrev refname; do
     else
         echo "done."
     fi
+    # force cf-serverd to reload straight away by faking a connection
+    # (without this, have seen problems with the first client that attempts to
+    #  connect)
+    nc -z localhost 5308
 
 done

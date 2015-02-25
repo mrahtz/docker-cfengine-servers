@@ -38,7 +38,8 @@ while read oldrev newrev refname; do
     rm -rf /var/lib/cfengine3/masterfiles/*
     cp -a /tmp/cfengine/masterfiles/* /var/lib/cfengine3/masterfiles/
     # copy the masterfiles to inputs, too, so that we can check them
-    # using cf-promises
+    # using cf-promises (and so that cf-serverd will pick up any
+    # potentially updated ACLs)
     cp -a /tmp/cfengine/masterfiles/* /var/lib/cfengine3/inputs/
 
     echo "Checking promises..."
@@ -51,13 +52,9 @@ while read oldrev newrev refname; do
         echo "done."
     fi
 
-    # removing cf_promises_validated from masterfiles will cause
-    # cf-serverd to re-evaluate promises, but after an indeterminate amount
-    # of time (it seems to run a check every 10 seconds)
-    # cf-serverd also seems to re-evaluate on every connection
-    # for some reason, cf-agent will sometimes fail to work if it
-    # triggers that re-evaluation
-    # so we force a re-evaluation here by just doing a dummy connect
-    nc -vz localhost 5308 &> /dev/null
+    # force cf-serverd to reload straight away by faking a connection           
+    # (without this, have seen problems with the first client that attempts to  
+    #  connect) 
+    nc -z localhost 5308
 
 done

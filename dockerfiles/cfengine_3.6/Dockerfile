@@ -38,12 +38,11 @@ RUN mkdir -p /var/log/supervisor
 RUN wget --quiet https://s3.amazonaws.com/cfengine.package-repos/community_binaries/cfengine-community_3.6.1-1_amd64.deb
 RUN dpkg -i cfengine-community_3.6.1-1_amd64.deb
 
-# bootstrap the policy server to itself
-# (its IP address will be different when it's actually brought up,
-#  of course - but the important thing is that this will populate
-#  /var/cfengine/inputs, which cf-serverd uses for its configuration)
-# for CFEngine 3.6, we use the default policy included in the package
-RUN cf-agent --bootstrap $(ip -4 -o addr show dev eth0 | awk '{print $4}' | cut -d/ -f1)
+# manually bootstrap using the default policy - just enough to get
+# cf-serverd up
+# (we don't use cf-agent --bootstrap because we have no stable
+#  address to bootstrap do)
+RUN cp -a /var/cfengine/masterfiles/* /var/cfengine/inputs/
 RUN mkdir /var/cfengine_git
 RUN GIT_DIR=/var/cfengine_git git --bare init
 COPY post-receive-hook /var/cfengine_git/hooks/post-receive
