@@ -43,7 +43,7 @@ git commit -m 'Add "hello_world" promise'
 git push dev change1
 
 cp /repo/vagrant_test_3.1/bootstrap_policy/* /var/lib/cfengine3/inputs/
-sed -i 's/cf3srv/cf3srv-change1/' /var/lib/cfengine3/inputs/update.cf
+sed -i 's/cf3srv/cfe31srv-change1/' /var/lib/cfengine3/inputs/update.cf
 cf-agent -Kf failsafe.cf
 cf-agent -K
 if [[ $(cat /tmp/hello.txt) != "Hello, world!" ]]; then

@@ -50,7 +50,7 @@ git add masterfiles/promises.cf
 git commit -m 'Add "hello_world" promise'
 git push dev change2
 
-cf-agent --bootstrap cf36srv-change2
+cf-agent --bootstrap cfe36srv-change2
 cf-agent -K
 if [[ $(cat /tmp/hello.txt) != "Hello, world!" ]]; then
     echo "Error: /tmp/hello.txt not as expected" >&2
