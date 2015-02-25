@@ -39,8 +39,7 @@ RUN mkdir -p /var/log/supervisor
 
 RUN mkdir /var/lib/cfengine3/masterfiles
 # init_policy contains some minimal CFEngine policy for the
-# first startup of cf-serverd -  just enough to allow clients
-# to connect and update
+# first startup of cf-serverd
 # (cf-serverd should notice once masterfiles have changed, though,
 #  and reload - so this really is only used for the initial startup)
 COPY init_policy/* /var/lib/cfengine3/inputs/
