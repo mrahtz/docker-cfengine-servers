@@ -45,6 +45,8 @@ RUN mkdir /var/lib/cfengine3/masterfiles
 #  and reload - so this really is only used for the initial startup)
 COPY init_policy/* /var/lib/cfengine3/inputs/
 COPY init_policy/* /var/lib/cfengine3/masterfiles/
+# cf-serverd won't start if the permissions are too relaxed
+RUN chmod 600 -R /var/lib/cfengine3 /var/lib/cfengine3/masterfiles
 RUN mkdir /var/cfengine_git
 RUN GIT_DIR=/var/cfengine_git git --bare init
 COPY post-receive-hook /var/cfengine_git/hooks/post-receive
