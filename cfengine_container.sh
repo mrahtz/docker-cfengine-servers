@@ -120,7 +120,7 @@ function push_branch
 {
     local container_name=$1
 
-    echo "Pushing Git branch..."
+    echo "Pushing Git branch to container..."
     GIT_SSH="$PROGDIR/container_ssh.sh" \
         git push "$container_name" "$BRANCH_NAME"
 }
