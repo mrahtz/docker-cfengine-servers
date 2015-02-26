@@ -73,7 +73,7 @@ $ cd docker-cfengine-servers/dockerfiles
 $ ./build_images.sh
 ```
 
-### Usage
+### Creating Containers
 
 * Add a Git remote for your development server repository to your local
   configuration checkout:
@@ -96,7 +96,7 @@ $ sudo cf-agent -K
 # sparkles!
 ```
 
-### Example setup
+## Example Setup
 
 For an example of how the whole thing fits together, see the `vagrant_test*`
 directories. `vagrant up` as usual, and a VM will execute a set of checks
