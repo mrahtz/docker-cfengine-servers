@@ -101,3 +101,11 @@ $ sudo cf-agent -K
 For an example of how the whole thing fits together, see the `vagrant_test*`
 directories. `vagrant up` as usual, and a VM will execute a set of checks
 demonstrating how everything works.
+
+## Design Notes
+
+* Communication with containers is done using SSH keys, generated when building
+  the Docker images. The same SSH key is used for all containers created.
+  * If you need access to the containers for debugging, use `container_ssh.sh`.
+* Keys for the CFEngine server are generated during image build, and are
+  therefore the same for all containers created.
