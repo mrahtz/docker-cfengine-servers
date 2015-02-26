@@ -44,9 +44,11 @@ while read oldrev newrev refname; do
     cp -a /tmp/cfengine/masterfiles/* /var/lib/cfengine3/inputs/
 
     echo "Checking promises..."
+    err=false
     # check promise syntax
-    cf-promises
-    if [[ $? != 0 ]]; then
+    cf-promises -f /var/lib/cfengine3/inputs/failsafe.cf || err=true
+    cf-promises -f /var/lib/cfengine3/inputs/promises.cf || err=true
+    if $err; then
         echo "Error: promise check failed" >&2
         exit 1
     else
