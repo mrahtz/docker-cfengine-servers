@@ -142,6 +142,7 @@ function create_container
     # sets up a mount namespace for the process which inherits
     # the aufs mounts, which can cause conflicts later on
     # when they're unmounted in the 'main' namespace
+    # --nontp: don't touch /etc/ntp.conf or restart NTP server
     nsenter --net=/var/run/netns/"$container_name" \
         dhcpcd-bin \
         --nontp \
