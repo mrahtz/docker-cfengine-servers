@@ -39,11 +39,13 @@ while read oldrev newrev refname; do
     cp -a /tmp/cfengine/masterfiles/* /var/cfengine/inputs/
 
     echo "Checking promises..."
+    err=false
     # check promise syntax
+    cf-promises --full-check -f /var/cfengine/inputs/update.cf || err=true
     # -T: tag directory; updates cf_promises_validated so that
     # clients will fetch new version
-    cf-promises -T /var/cfengine/masterfiles
-    if [[ $? != 0 ]]; then
+    cf-promises --full-check -T /var/cfengine/masterfiles || err=true
+    if $err; then
         echo "Error: promise check failed" >&2
     else
         echo "done."
