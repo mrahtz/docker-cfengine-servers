@@ -51,6 +51,9 @@ RUN mkdir /var/run/sshd
 RUN mkdir /root/.ssh
 # otherwise root login fails with exit status 254
 RUN sed -i 's/UsePAM yes/UsePAM no/g' /etc/ssh/sshd_config
+# disallow password authentication, to make it clearer for debugging
+# that one has to log in using the key
+RUN echo 'PasswordAuthentication no' >> /etc/ssh/sshd_config
 # otherwise login will take a long time if there are issues with DNS
 RUN echo 'UseDNS no' >> /etc/ssh/sshd_config
 ADD container_ssh_key.pub /root/.ssh/authorized_keys
