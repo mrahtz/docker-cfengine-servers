@@ -73,7 +73,7 @@ $ cd docker-cfengine-servers/dockerfiles
 $ ./build_images.sh
 ```
 
-### Creating Containers
+### Using Containers
 
 * Add a Git remote for your development server repository to your local
   configuration checkout:
@@ -94,6 +94,13 @@ remote: Creating docker container with name 'cfe36srv-addsparkles' from image 'm
 $ sudo cf-agent --bootstrap cfe36srv-addsparkles
 $ sudo cf-agent -K
 # sparkles!
+```
+* Once done, the container can be removed by deleting the remote branch:
+```bash
+$ git push dev --delete addsparkles
+...
+remote: Container 'cfe36srv-addsparkles' destroyed successfully
+...
 ```
 
 ## Example Setup
