@@ -75,8 +75,8 @@ fi
 function escape
 {
     local raw_name=$1
-    # replace anything other than a-z, A-Z, 0-9, or '-' with an underscore
-    local escaped_name=$(sed 's/[^a-zA-Z0-9-]/_/g' <<< "$raw_name")
+    # replace anything other than a-z, A-Z, 0-9, or '-' with a dash
+    local escaped_name=$(sed 's/[^a-zA-Z0-9-]/-/g' <<< "$raw_name")
     echo "$escaped_name"
 }
 
