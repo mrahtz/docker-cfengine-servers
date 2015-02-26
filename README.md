@@ -63,10 +63,14 @@ $ git clone https://github.com/mrahtz/docker-cfengine-servers
 ```bash
 $ cp docker-cfengine-servers/post-receive.sample.3.6 post-receive
 ```
-* Optionally, customise the `post-receive` hook used by the container to
+* Optionally, Customise the `post-receive` hook used by the container to
   update server policy. These are located in
-  `dockerfiles/<version>/post_receive_hook`. Customisation may be necessary
-  if your versioned configuration includes directories other than `masterfiles`.
+  `dockerfiles/<version>/post_receive_hook`. Customisation may be necessary if:
+  * your versioned configuration includes directories other than `masterfiles`.
+  * you have references to your main policy server in the configuration itself
+    which will need replacing with the address of the container. (This probably
+    will be the case if you run CFEngine 3.1 - see the `ORIG_SRV_NAME` tunable
+    in `cfengine_3.1/post-receive-hook`.)
 * Build the Docker images with:
 ```bash
 $ cd docker-cfengine-servers/dockerfiles

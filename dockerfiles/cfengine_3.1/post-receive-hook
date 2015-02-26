@@ -25,6 +25,8 @@
 # SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 ################################################################################
 
+readonly ORIG_SRV_NAME=cf3srv
+
 while read oldrev newrev refname; do
     branch=$(basename "$refname")
 
@@ -33,7 +35,7 @@ while read oldrev newrev refname; do
     git clone -b "$branch" /var/cfengine_git /tmp/cfengine
     # replace any references to the main policy server
     find /tmp/cfengine -type f -name '*.cf' -exec \
-        sed -i "s/cf3srv/$HOSTNAME/g" "{}" \;
+        sed -i "s/$ORIG_SRV_NAME/$HOSTNAME/g" "{}" \;
     # and update the masterfiles from it
     rm -rf /var/lib/cfengine3/masterfiles/*
     cp -a /tmp/cfengine/masterfiles/* /var/lib/cfengine3/masterfiles/
